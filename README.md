@@ -12,7 +12,7 @@ Siga os passos abaixo para configurar o sistema no seu computador.
 1. Instalar : `sudo snap install beekeeper-studio` ou `https://snapcraft.io/install/beekeeper-studio/ubuntu`
 2. Cria projeto no BD(PGADMIN ou DBREAVER)
 
-### `BACKEND`
+### `BACKEND e MOBILE`
 Siga os passos abaixo para configurar o sistema no seu computador.
 1. Instalar todas as dependências assets: `yarn install`
 2. Iniciar projeto `yarn dev`
