@@ -17,14 +17,26 @@ export type CategoryProps = {
   name: string;
 }
 
+type ProductsProps = {
+  id: string;
+  name: string;
+}
+
+
 type OrderRouteProps = RouteProp<RouteDetailParams, 'Order'>;
 
 export default function Order() {
   const route = useRoute<OrderRouteProps>();
   const navigation = useNavigation();
   const [category, setCategory] = useState<CategoryProps[] | []>([]);
-  const [categorySelected, setCategorySelected] = useState<CategoryProps>();
+  const [categorySelected, setCategorySelected] = useState<CategoryProps | undefined>();
   const [modalCategoryVisible, setModalCategoryVisible] = useState(false);
+
+  const [products, setProducts] = useState<ProductsProps[] | []>([]);
+  const [productSelected, setProductSelected] = useState<ProductsProps  | undefined>();
+  const [modalProductVisible, setModalProductyVisible] = useState(false);
+
+
   const [amount, setAmount] = useState('1');
 
   useEffect(() => {
@@ -36,6 +48,21 @@ export default function Order() {
     }
     loadInfo()
   }, [])
+
+  useEffect(() => {
+    async function loadInfo() {
+      const response = await api.get('/category/product',{
+        params:{
+          category_id: categorySelected?.id
+        }
+      })
+      //console.log("===========================")
+      //console.log(response.data)
+      setProducts(response.data)
+      setProductSelected(response.data[0])
+    }
+    loadInfo()
+  }, [categorySelected])
 
 
   async function handleCloseOrder() {
@@ -75,9 +102,14 @@ export default function Order() {
           </Text>
         </TouchableOpacity>
       )}
-      <TouchableOpacity style={styles.input}>
-        <Text style={{ color: '#fff' }}>Pizza de calabreca</Text>
-      </TouchableOpacity>
+        {products.length !== 0 && (
+        <TouchableOpacity style={styles.input}>
+          <Text style={{ color: '#fff' }}>
+            {productSelected?.name}
+          </Text>
+        </TouchableOpacity>
+      )}
+
       <View style={styles.qtdContainer}>
         <Text style={styles.qtdText}>Quantidade</Text>
         <TextInput
